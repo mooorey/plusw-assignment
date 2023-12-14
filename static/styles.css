@@ -62,10 +62,12 @@ body {
     line-height: var(--bs-body-line-height);
     color: var(--bs-body-color);
     text-align: var(--bs-body-text-align);
-    background-color: #3AAFA9 ;
+    background-color: #3AAFA9;
     -webkit-text-size-adjust: 100%;
 
 }
+
+
 
 .login h1 {
     font-family: 'Dhurjati', sans-serif;
@@ -167,3 +169,5 @@ h3 {
 	color: white;
 	font-weight: 700;
 }
+
+
