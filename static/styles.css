@@ -31,10 +31,10 @@
     margin: 20px 0 20px 0;
 }
 
-form {
+.login-form {
     background: #DEF2F1;
     border: 1px solid black;
-    width: 25rem;
+    width: 30rem;
     text-align: center;
     margin: 0 auto;
     padding: 20px;
@@ -165,12 +165,51 @@ h3 {
     font-weight: 700;
 }
 
-.heading{
-    text-align: center !important;
+
+
+.heading {
+    margin: 22px 0px 0px 0px;
+    text-align: center;
 }
 
-@media screen and (min-width: 480px) {
-        .heading{
-            text-align: center;
-        } 
+@media screen and (max-width: 480px) {
+
+    .login-form {
+        background: #DEF2F1;
+        border: 1px solid black;
+        width: 20rem;
+        text-align: center;
+        margin: 0 auto;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 10px 10px #2B7A77;
+    }
+
+    #username {
+        width: 16rem;
+    }
+
+    #password {
+        width: 16rem;
+    }
+
+    #email {
+        width: 16rem;
+    }
+
+    #confirm-password {
+        width: 16rem;
+    }
+
+    .logout {
+        float: right;
+        background: #DEF2F1;
+        color: black;
+        text-decoration: none;
+        margin: 8px 0 0px 0;
+    }
+
+    .recommendations-form{
+        display: flex;
+    }
 }
