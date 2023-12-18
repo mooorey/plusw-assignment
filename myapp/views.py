@@ -74,13 +74,40 @@ def home(request):
     return render(request, 'home.html', {'user': request.user})
 
 
+# def recommendations(request):
+#     if request.method == "POST":
+#         user_input = request.POST.get('user-input')
+#         prompt = f"recommend any 5 books with {user_input}, i only need the title dont give description or anything else"
+#         response = openai.ChatCompletion.create(
+#             model="gpt-3.5-turbo", messages=[{"role": "system", "content": "You are a helpful assistant."},
+#                                              {"role": "user", "content": prompt}]
+#         )
+#         print("Response:", response)
+#         print(openai.api_key)
+#     return render(request, 'home.html', {})
+
 def recommendations(request):
     if request.method == "POST":
         user_input = request.POST.get('user-input')
-        prompt = user_input
+        prompt = f"Recommend 5 books in the genre of {user_input}. Do not give description or anything else of the books only recommend them in this form: book-name by author, etc etc"
         response = openai.ChatCompletion.create(
-            model = "gpt-3.5-turbo", messages=[{"role":"user","content":prompt}]
+            model="gpt-3.5-turbo", messages=[{"role": "system", "content": "You are a helpful assistant."},
+                                             {"role": "user", "content": prompt}]
         )
-        print("Response:", response)
-    return render(request, 'home.html', {})
 
+        # Extract recommended books from the response
+        recommended_books = response['choices'][0]['message']['content']
+
+        # Split the recommended books into a list
+        recommended_books_list = recommended_books.split('\n\n')
+
+        # Store the recommended books in a dictionary
+        books_dict = {'books': recommended_books_list}
+
+        # Print the dictionary for debugging
+        print("Recommended Books Dictionary:", books_dict)
+
+        # Pass the dictionary to the HTML template
+        return render(request, 'home.html', {'books_dict': books_dict})
+
+    return render(request, 'home.html', {})
