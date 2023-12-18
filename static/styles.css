@@ -43,12 +43,7 @@ form {
 }
 
 
-.heading {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 22px 0px 0px 0px;
-}
+
 
 .heading h1 {
     font-family: 'Oswald', sans-serif;
@@ -145,7 +140,7 @@ input {
 
 .main-button {
     display: flex;
-    margin: 10px auto ;
+    margin: 10px auto;
     border-radius: 0px;
     padding: 11px;
     background: #17242A;
@@ -162,12 +157,20 @@ h3 {
 }
 
 .logout {
-	padding: 10px;
-	border: 1px solid black;
-	border-radius: 10px;
-	background: #3AAFA9;
-	color: white;
-	font-weight: 700;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 10px;
+    background: #3AAFA9;
+    color: white;
+    font-weight: 700;
 }
 
+.heading{
+    text-align: center !important;
+}
 
+@media screen and (min-width: 480px) {
+        .heading{
+            text-align: center;
+        } 
+}

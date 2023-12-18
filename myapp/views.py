@@ -3,6 +3,17 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User, auth
 from django.contrib import messages
 from .models import Feature 
+from django.http import JsonResponse
+from django.conf import settings
+import openai, os
+# from openai import OpenAI
+from dotenv import load_dotenv
+load_dotenv()
+import typer
+
+
+openai.api_key = os.getenv("OPENAI_KEY")
+app = typer.Typer()
 
 # Create your views here.
 def index(request):
@@ -38,10 +49,11 @@ def register(request):
 
 def login(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+        username = request.POST.get('username', '')  # Use get method with a default value
+        password = request.POST.get('password', '')  # Use get method with a default value
+
         user = auth.authenticate(username=username, password=password)
-    
+
         if user is not None:
             auth.login(request, user)
             return redirect('home')  # Redirect to home page if login is successful
@@ -53,9 +65,22 @@ def login(request):
         return render(request, 'login-page.html')
 
 
+
 def logout(request):
     auth.logout(request)
     return redirect('login')
 
 def home(request):
     return render(request, 'home.html', {'user': request.user})
+
+
+def recommendations(request):
+    if request.method == "POST":
+        user_input = request.POST.get('user-input')
+        prompt = user_input
+        response = openai.ChatCompletion.create(
+            model = "gpt-3.5-turbo", messages=[{"role":"user","content":prompt}]
+        )
+        print("Response:", response)
+    return render(request, 'home.html', {})
+
