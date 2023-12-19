@@ -104,6 +104,7 @@ input {
     font-family: 'Oswald', sans-serif;
     font-weight: 700;
     color: white;
+    font-size: 25px;
 }
 
 
@@ -178,7 +179,16 @@ h3 {
     justify-content: center;
     align-content: center;
     font-size: 21px;
-  }
+}
+
+
+.login .container {
+    padding: 50px 0px;
+}
+
+.sign-up .container {
+    padding: 50px 0px;
+}
 
 @media screen and (max-width: 480px) {
 
@@ -210,4 +220,15 @@ h3 {
     }
 
 
+    .main-heading {
+        font-size: 19px;
+    }
+
+    .main-text {
+        font-size: 16px;
+    }
+
+    .recommendation-text {
+        font-size: 20px;
+    }
 }

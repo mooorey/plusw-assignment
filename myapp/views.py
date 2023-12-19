@@ -10,6 +10,9 @@ import openai, os
 from dotenv import load_dotenv
 load_dotenv()
 import typer
+import re
+import random
+
 
 
 openai.api_key = os.getenv("OPENAI_KEY")
@@ -22,6 +25,7 @@ def index(request):
 
     
 
+
 def register(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -31,14 +35,17 @@ def register(request):
 
         if confirm_password == password:
             if User.objects.filter(email=email).exists():
-                messages.info(request, 'email already in use')
+                messages.info(request, 'Email already in use')
+                return redirect('register')
+            elif not re.match(r'^[a-zA-Z0-9._%+-]+@(gmail\.com|hotmail\.com|yahoo\.com|live\.com)$', email):
+                messages.info(request, 'Invalid email syntax')
                 return redirect('register')
             elif User.objects.filter(username=username).exists():
-                messages.info(request, 'username already in use')
+                messages.info(request, 'Username already in use')
                 return redirect('register')
             else:
                 user = User.objects.create_user(username=username, email=email, password=password)
-                user.save();
+                user.save()
                 return redirect('login')
         else:
             messages.info(request, 'Password is not the same')
@@ -86,13 +93,61 @@ def home(request):
 #         print(openai.api_key)
 #     return render(request, 'home.html', {})
 
+# def recommendations(request):
+#     if request.method == "POST":
+#         user_input = request.POST.get('user-input')
+#         prompt = f"Recommend 5 books in the genre of {user_input}. Do not give description or anything else of the books only recommend them in this form: book-name by author, etc etc"
+#         response = openai.ChatCompletion.create(
+#             model="gpt-3.5-turbo", messages=[{"role": "system", "content": "You are a helpful assistant."},
+#                                              {"role": "user", "content": prompt}]
+#         )
+
+#         # Extract recommended books from the response
+#         recommended_books = response['choices'][0]['message']['content']
+
+#         # Split the recommended books into a list
+#         recommended_books_list = recommended_books.split('\n\n')
+
+#         # Store the recommended books in a dictionary
+#         books_dict = {'books': recommended_books_list}
+
+#         # Print the dictionary for debugging
+#         print("Recommended Books Dictionary:", books_dict)
+
+#         # Pass the dictionary to the HTML template
+#         return render(request, 'home.html', {'books_dict': books_dict})
+
+#     return render(request, 'home.html', {})
+
+
 def recommendations(request):
     if request.method == "POST":
         user_input = request.POST.get('user-input')
-        prompt = f"Recommend 5 books in the genre of {user_input}. Do not give description or anything else of the books only recommend them in this form: book-name by author, etc etc"
+
+        # Define a list of possible system messages for more variety
+        system_messages = [
+            "You are a helpful assistant.",
+            "You are an expert in book recommendations.",
+            "You love suggesting great books to read.",
+            # Add more system messages as needed
+        ]
+
+        # Randomly select a system message
+        selected_system_message = random.choice(system_messages)
+
+        # Construct the prompt with the selected system message
+        prompt = f"{selected_system_message}\n\nRecommend 5 books in the genre of {user_input}. Do not give description or anything else of the books, only recommend them in this form: book-name by author, etc etc"
+
+        # Define the temperature value (adjust as needed)
+        temperature = 0.7
+
         response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo", messages=[{"role": "system", "content": "You are a helpful assistant."},
-                                             {"role": "user", "content": prompt}]
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": selected_system_message},
+                {"role": "user", "content": prompt},
+            ],
+            temperature=temperature  # Add the temperature parameter
         )
 
         # Extract recommended books from the response
