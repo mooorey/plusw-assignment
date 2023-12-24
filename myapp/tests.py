@@ -3,7 +3,7 @@ from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth.models import User
 
-class TestViews(TestCase):
+class TestLoginSignup(TestCase):
     def setUp(self):
         # Create a test user for login tests
         self.user = User.objects.create_user(username='testuser', password='testpassword')
@@ -14,9 +14,21 @@ class TestViews(TestCase):
         self.assertTemplateUsed(response, 'login-page.html')
 
     def test_signup_page(self):
-        response = self.client.get(reverse('register'))
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'signup.html')
+        # Simulate a complete signup process
+        response = self.client.post(reverse('register'), {
+            'username': 'testuser',
+            'email': 'testuser@gmail.com',
+            'password': 'testpassword',
+            'confirm-password': 'testpassword'
+        })
+
+        # Check if the signup process is successful
+        self.assertEqual(response.status_code, 302)  # Redirects after successful signup
+
+        # Check if the user is created in the database
+        self.assertTrue(User.objects.filter(username='testuser').exists())
+
+
 
     def test_login_functionality(self):
         # Test login functionality with valid credentials

@@ -1,82 +1,78 @@
 {% load static %}
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>BOOKWISE</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" 
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link href="{% static 'styles.css' %}" rel="stylesheet">
-</head>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <link href="{% static 'styles.css' %}" rel="stylesheet" />
+  </head>
 
-<body>
-
+  <body>
     <nav class="navbar">
-        <div class="container-fluid">
-            <p class="navbar-text">
-                BOOKWISE
-            </p>
-            <a type="submit" class="logout" href="logout">
-                LOGOUT
-            </a>
-        </div>
+      <div class="container-fluid">
+        <p class="navbar-text">BOOKWISE</p>
+        <a type="submit" class="logout" href="logout"> LOGOUT </a>
+      </div>
     </nav>
 
     <section class="main">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12">
-                    <h1 class="main-heading">
-                        {% if user.is_authenticated %}
-                        WELCOME TO BOOKWISE {{ user.username }} !!, WHERE PAGES COME ALIVE. DISCOVER YOUR NEXT FAVORITE
-                        READ WITH
-                        CURATED
-                        RECOMMENDATIONS TAILORED JUST FOR YOU. DIVE INTO A WORLD OF LITERARY WONDERS – START EXPLORING
-                        TODAY!
-                        {% endif %}
-                    </h1>
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12">
+            <h1 class="main-heading">
+                {% if user.is_authenticated %}
+                  WELCOME TO BOOKWISE {{ user.username }} !!, WHERE PAGES COME ALIVE.
+                  DISCOVER YOUR NEXT FAVORITE READ WITH CURATED RECOMMENDATIONS TAILORED JUST
+                  FOR YOU. DIVE INTO A WORLD OF LITERARY WONDERS – START EXPLORING TODAY!
+                {% endif %}
+              </h1>
 
-                    <p class="main-text">
-                        ENTER THE GENRE/GENRES OF THE BOOKS YOU WANT TO READ
-                    </p>
+            <p class="main-text">
+              ENTER THE GENRE/GENRES OF THE BOOKS YOU WANT TO READ
+            </p>
 
-                    <!-- Your HTML form -->
-                    <form method="post" action="{% url 'recommendations' %}" class="recommendations-form d-flex justify-content-center">
-                        {% csrf_token %}
-                        <!-- Your form fields, e.g., text input for user-input -->
-                        <input type="text" name="user-input">
-                        <!-- Your submit button -->
-                        <button type="submit">Search</button>
-                    </form>
+            <!-- Your HTML form -->
+            <form
+              method="post"
+              action="{% url 'recommendations' %}"
+              class="recommendations-form d-flex justify-content-center"
+            >
+              {% csrf_token %}
+              <!-- Your form fields, e.g., text input for user-input -->
+              <input type="text" name="user-input" />
+              <!-- Your submit button -->
+              <button type="submit">Search</button>
+            </form>
 
+            <div class="recommendations">
+                {% if books_dict.books %}
+                  <p class="recommendation-text">HERE ARE THE TOP BOOKS YOU SHOULD READ:</p>
+                  {% for book in books_dict.books %}
+                    <p class="genre-recommendation">{{ book|linebreaksbr }}</p>
+                  {% endfor %}
+                {% endif %}
+              </div>
+              
 
-                    <p class="recommendation-text">
-                        HERE ARE THE TOP BOOKS YOU SHOULD READ:
-                    </p>
-
-                    <div class="recommendations">
-                        {% for book in books_dict.books %}
-                        <p class="genre-recommendation">{{ book|linebreaksbr }}</p>
-                        {% endfor %}
-                    </div>
-
-
-                </div>
-            </div>
+          </div>
         </div>
+      </div>
     </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-        crossorigin="anonymous"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
-
-
-</body>
-
+  </body>
 </html>
