@@ -27,5 +27,30 @@ class TestViews(TestCase):
         # Test login functionality with invalid credentials
         response = self.client.post(reverse('login'), {'username': 'invaliduser', 'password': 'invalidpassword'})
         self.assertEqual(response.status_code, 302)  # Redirects to another page after invalid login
+ 
+class TestRecommendations(TestCase):
+    def setUp(self):
+        # Create a test user
+        self.user = User.objects.create_user(username='testuser', password='testpassword')
 
-    # Add more specific tests as needed
+    def test_recommendations_functionality(self):
+        # Log in the test user
+        self.client.login(username='testuser', password='testpassword')
+
+        # Send a POST request to the recommendations endpoint with a sample user-input
+        response = self.client.post(reverse('recommendations'), {'user-input': 'Mystery'})
+
+        # Check if the view returns a success status code
+        self.assertEqual(response.status_code, 200)
+
+        # Add more specific checks for the content of the response if needed
+        # For example, you can check if the recommended books are present in the response content
+
+        # Example: Check if the recommended books section is present in the HTML response
+        self.assertContains(response, '<div class="recommendations">')
+
+        # Example: Check if specific book titles are present in the HTML response
+        self.assertContains(response, 'Gone Girl')
+        self.assertContains(response, 'The Girl with the Dragon Tattoo')
+
+        # Add more specific checks as needed
